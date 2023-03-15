@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gerenciador_tarefas_md/pages/lista_tarefas_page.dart';
 
-
 void main() {
   runApp(const AppGerenciadorTarefas());
 }
@@ -9,18 +8,16 @@ void main() {
 class AppGerenciadorTarefas extends StatelessWidget {
   const AppGerenciadorTarefas({super.key});
 
-  // This widget is the root of your application...
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'App - Gerenciador de tarefas',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-
-
-
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home:  ListaTarefaPage(),
+      home: ListaTarefaPage(),
     );
   }
 }

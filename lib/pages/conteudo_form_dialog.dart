@@ -12,10 +12,10 @@ class ConteudoFormDialog extends StatefulWidget{
 
 
   @override
-  _ConteudoFormDialogState createState() => _ConteudoFormDialogState();
+  ConteudoFormDialogState createState() => ConteudoFormDialogState();
 
 }
-class _ConteudoFormDialogState extends State<ConteudoFormDialog> {
+class ConteudoFormDialogState extends State<ConteudoFormDialog> {
 
   final formKey = GlobalKey<FormState>();
   final descricaoController = TextEditingController();
@@ -23,15 +23,17 @@ class _ConteudoFormDialogState extends State<ConteudoFormDialog> {
   final _dateFormat = DateFormat('dd/MM/yyyy');
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    if (widget.tarefaAtual != null){
+    if (widget.tarefaAtual != null) {
+      descricaoController.text = widget.tarefaAtual!.descricao;
+      prazoController.text = widget.tarefaAtual!.prazoFormatado;
 
     }
   }
 
 
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Form(
         key: formKey,
         child: Column(
@@ -40,8 +42,8 @@ class _ConteudoFormDialogState extends State<ConteudoFormDialog> {
             TextFormField(
               controller: descricaoController,
               decoration: InputDecoration(labelText: 'Descrição'),
-              validator: (String? valor){
-                if (valor == null || valor.isEmpty){
+              validator: (String? valor) {
+                if (valor == null || valor.isEmpty) {
                   return 'Informe a descrição';
                 }
                 return null;
@@ -64,7 +66,34 @@ class _ConteudoFormDialogState extends State<ConteudoFormDialog> {
           ],
         )
     );
-
   }
+
+  void _mostrarCalendario() {
+    final dataFormatada = prazoController.text;
+    var data = DateTime.now();
+    if (dataFormatada.isNotEmpty) {
+      data = _dateFormat.parse(dataFormatada);
+    }
+    showDatePicker(context: context,
+      initialDate: data,
+      firstDate: data.subtract(Duration(days: 365 * 5)),
+      lastDate: data.add(Duration(days: 365 * 5)),
+    ).then((DateTime? dataSElecionada) {
+      if (dataSElecionada != null) {
+        setState(() {
+          prazoController.text = _dateFormat.format(dataSElecionada);
+        });
+      }
+    });
+  }
+
+  bool dadosValidados()=> formKey.currentState?.validate() == true;
+
+  Tarefa get novaTarefa => Tarefa(
+      id: widget.tarefaAtual?.id ?? 0,
+      descricao: descricaoController.text,
+      prazo: prazoController.text.isNotEmpty ? null : _dateFormat.parse(prazoController.text),
+
+  );
 
 }
