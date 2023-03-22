@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gerenciador_tarefas_md/model/tarefa.dart';
+import 'package:gerenciador_tarefas_md/pages/filtro_page.dart';
 
 import '../widgets/conteudo_form_dialog.dart';
 import 'conteudo_form_dialog.dart';
@@ -19,13 +20,13 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
 
   final tarefas = <Tarefa>
   [
-    Tarefa(id: 1,
-      descricao: 'Fazer atividades da aula',
-      prazo: DateTime.now().add(Duration(days: 5)),
-    )
+    //Tarefa(id: 1,
+    // descricao: 'Fazer atividades da aula',
+    // prazo: DateTime.now().add(Duration(days: 5)),
+    // )
   ];
 
-  var _ultimoId = 1;
+  var _ultimoId = 0;
 
   @override
   Widget build(BuildContext context){
@@ -60,10 +61,11 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
                       final novaTarefa = key.currentState!.novaTarefa;
                       if(index == null){
                         novaTarefa.id = ++_ultimoId;
+                        tarefas.add(novaTarefa);
                       }else{
                         tarefas[index] = novaTarefa;
                       }
-                      tarefas.add(novaTarefa);
+
                     });
                     Navigator.of(context).pop();
                   }
@@ -80,7 +82,7 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
       title: const Text('Gerenciador de Tarefas'),
       actions: [
         IconButton(
-            onPressed: () {},
+            onPressed: _abrirPaginaFiltro,
             icon: const Icon(Icons.filter_list)),
       ],
     );
@@ -177,5 +179,17 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
         ),
       )
     ];
+  }
+
+  void _abrirPaginaFiltro(){
+    final navigator = Navigator.of(context);
+    navigator.pushNamed(FiltroPage.routeName).then((alterouValores){
+      if( alterouValores == true){
+        ///filtro
+      }
+    }
+
+    );
+
   }
 }
