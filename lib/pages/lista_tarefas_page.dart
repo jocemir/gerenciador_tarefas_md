@@ -2,10 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gerenciador_tarefas_md/model/tarefa.dart';
+
 import 'package:gerenciador_tarefas_md/pages/filtro_page.dart';
 
 import '../widgets/conteudo_form_dialog.dart';
 import 'conteudo_form_dialog.dart';
+import 'detelhes_tarefa_page.dart';
 
 class ListaTarefaPage extends StatefulWidget{
 
@@ -17,6 +19,7 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
 
   static const ACAO_EDITAR = 'editar';
   static const ACAO_EXCLUIR = 'excluir';
+  static const ACAO_VISUALIZAR = 'visualizar';
 
   final tarefas = <Tarefa>
   [
@@ -25,7 +28,6 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
     // prazo: DateTime.now().add(Duration(days: 5)),
     // )
   ];
-
 
   var _ultimoId = 0;
 
@@ -109,7 +111,13 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
             onSelected: (String valorSelecinado){
               if(valorSelecinado == ACAO_EDITAR){
                 _abrirForm(tarefaAtual: tarefa, index: index);
-              }else{
+              }else if(valorSelecinado == ACAO_VISUALIZAR) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => DetalhePage(tarefa: tarefa),
+                )
+                );
+              }
+              else{
                 _excluir(index);
               }
             }
@@ -156,6 +164,18 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
   List<PopupMenuEntry<String>> _criarItensMenu(){
     return[
       PopupMenuItem(
+        value: ACAO_VISUALIZAR,
+        child: Row(
+          children: [
+            Icon(Icons.visibility, color: Colors.blue),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text('Visualizar'),
+            )
+          ],
+        ),
+      ),
+      PopupMenuItem(
         value: ACAO_EDITAR,
         child: Row(
           children: [
@@ -178,7 +198,7 @@ class _ListaTarefasPageState extends State<ListaTarefaPage>{
             )
           ],
         ),
-      )
+      ),
     ];
   }
 
