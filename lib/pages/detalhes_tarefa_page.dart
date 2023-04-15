@@ -32,6 +32,7 @@ class _DetalhesTarefaPageState extends State<DetalhesTarefaPage> {
             Valor(valor: '${widget.tarefa.id}'),
           ],
         ),
+
         Row(
           children: [
             Campo(descricao: 'Descrição: '),
